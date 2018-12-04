@@ -2,6 +2,12 @@ html, body {
 	padding: 0;
 	margin: 0;
 	font-family: 'Playfair Display', sans-serif;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none; 
+	-khtml-user-select: none; 
+	-moz-user-select: none; 
+	-ms-user-select: none; 
+	user-select: none; 
 }
 
 .header {
@@ -12,10 +18,120 @@ html, body {
 	z-index: 1000;
 }
 
-.header .title {
+.header__title {
 	font-size: 70px;
-  font-weight: bold;
-  color: #d1b790;
+	font-weight: bold;
+	color: #d1b790;
+}
+
+.score {
+	width: 100%;
+	margin: 20px 0 0;
+	text-align: center;
+	white-space: nowrap;
+}
+
+.score__content {
+	position: relative;
+	display: inline-block;
+	padding: 0 16px;
+	vertical-align: top;
+}
+
+.score__content:nth-child(2) {
+	border-right: 1px solid #d1b790;
+	border-left: 1px solid #d1b790;
+}
+
+.score__label {
+	font-size: 9px;
+	font-weight: bold;
+	position: relative;
+	margin: 0 0 0.5em 0;
+	text-align: center;
+	letter-spacing: 3px;
+	text-transform: uppercase;
+	color: #d1b790;
+}
+
+.score__value {
+	font-family: 'Playfair Display';
+	font-weight: bold;
+	color: #d1b790;
+}
+
+.score__value--level {
+	font-size: 26px;
+}
+
+.score__value--dist {
+	font-size: 30px;
+}
+
+.level-circle {
+	position: absolute;
+	left: 50%;
+	width: 46px;
+	margin: -37px 0 0 -23px;
+	-webkit-transform: rotate(-90deg);
+	transform: rotate(-90deg);
+}
+
+.score__value--energy {
+	position: relative;
+	width: 60px;
+	height: 8px;
+	margin-top: 20px;
+	border-radius: 3px;
+	background-color: #d1b790;
+}
+
+.energy-bar {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	margin: 2px;
+	background-color: #f25346;
+	-webkit-animation-name: none;
+	animation-name: none;
+	-webkit-animation-duration: 150ms;
+	animation-duration: 150ms;
+	-webkit-animation-iteration-count: infinite;
+	animation-iteration-count: infinite;
+}
+
+.message {
+	font-family: 'Avenir';
+	font-weight: bold;
+	position: absolute;
+	left: 0;
+	width: 100%;
+	text-align: center;
+	text-transform: uppercase;
+	pointer-events: none;
+}
+
+.message--replay {
+	font-size: 18px;
+	bottom: 54vh;
+	display: block;
+	letter-spacing: 8px;
+	color: #8e7b5e;
+}
+
+.message--instructions {
+	font-size: 0.85em;
+	bottom: 8vh;
+	letter-spacing: 0.2em;
+	color: #589290;
+}
+
+.message--instructions span {
+	display: block;
+	color: #d6483b;
+	white-space: nowrap;
 }
 
 #world {

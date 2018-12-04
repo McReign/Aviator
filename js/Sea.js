@@ -1,7 +1,7 @@
 let Sea = function () {
 	
 	// Создаем форму цилиндра
-	var geom = new THREE.CylinderGeometry(600,600,800,40,10);
+	var geom = new THREE.CylinderGeometry(600,600,800,50,10);
 	
 	// Поворачиваем форму по оси X
 	geom.applyMatrix(new THREE.Matrix4().makeRotationX(-Math.PI/2));

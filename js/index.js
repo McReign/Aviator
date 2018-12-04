@@ -7,9 +7,52 @@ var Colors = {
 	blue:0x68c3c0,
 };
 
+var game = {
+	distance:0,
+	energy:100,
+	level:1,
+	status : "waitingReplay",
+};
+
+function showReplay(){
+	replayMessage.style.display="block";
+}
+  
+function hideReplay(){
+	replayMessage.style.display="none";
+}
+
+function updateDistance(){
+	// game.distance += game.speed*deltaTime*game.ratioSpeedDistance;
+	game.distance += 1;
+	fieldDistance.innerHTML = Math.floor(game.distance);
+	// var d = 502*(1-(game.distance%game.distanceForLevelUpdate)/game.distanceForLevelUpdate);
+	// levelCircle.setAttribute("stroke-dashoffset", d);
+}
+  
+function updateEnergy(){
+	// game.energy -= game.speed*deltaTime*game.ratioSpeedEnergy;
+	game.energy -= .1;
+	game.energy = Math.max(0, game.energy);
+	energyBar.style.right = (100-game.energy)+"%";
+	energyBar.style.backgroundColor = (game.energy<50)? "#f25346" : "#68c3c0";
+  
+	if (game.energy <1){
+	  	game.status = "gameover";
+	}
+}
+
 window.addEventListener('load', init, false);
 
+var fieldDistance, energyBar, replayMessage, fieldLevel, levelCircle;
+
 function init() {
+	fieldDistance = document.getElementById("distValue");
+	energyBar = document.getElementById("energyBar");
+	replayMessage = document.getElementById("replayMessage");
+	fieldLevel = document.getElementById("levelValue");
+	levelCircle = document.getElementById("levelCircleStroke");
+	
 	// создаем сцену
 	createScene();
 
@@ -17,23 +60,55 @@ function init() {
 	createLights();
 
 	// добавляем объекты
-	createPlane();
 	createSea();
 	createSky();
 
 	document.addEventListener('mousemove', handleMouseMove, false);
+	document.addEventListener('click', start, false);
 
 	// начинаем цикл который будет изменять положение 
 	// объектов и перерисовывать сцену
 	loop();
 }
 
+function start() {
+	if (game.status == "waitingReplay"){
+		game = {
+			distance:0,
+			energy:100,
+			level:1,
+			status : "playing",
+		};
+
+		hideReplay();
+		createPlane();
+	}
+}
+
 function loop(){
-  updatePlane();
-  sea.mesh.rotation.z += .005;
-  sky.mesh.rotation.z += .01;
-  renderer.render(scene, camera);
-  requestAnimationFrame(loop);
+	if (game.status=="playing") {
+		updatePlane();
+		updateDistance();
+		updateEnergy();
+	}
+	else if(game.status=="gameover"){
+		airplane.mesh.rotation.z += (-Math.PI/2 - airplane.mesh.rotation.z)*.015;
+		airplane.mesh.rotation.x += 0.02;
+		airplane.mesh.position.y -= 3;
+	
+		if (airplane.mesh.position.y <-200){
+			showReplay();
+			game.status = "waitingReplay";
+		}
+	}
+	else if (game.status=="waitingReplay"){
+
+	}
+
+	sea.mesh.rotation.z += .005;
+	sky.mesh.rotation.z += .01;
+	renderer.render(scene, camera);
+	requestAnimationFrame(loop);
 }
 
 var scene,
@@ -62,7 +137,7 @@ function createScene() {
 		aspectRatio,
 		nearPlane,
 		farPlane
-		);
+	);
 	
 	// Задаем позицию камеры
 	camera.position.x = 0;

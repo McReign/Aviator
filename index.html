@@ -9,9 +9,31 @@
 		<body>
 				<div class="container">
 						<div class="header">
-								<span class="title">Авиатор</span>
+							<span class="header__title">Авиатор</span>
+							<div class="score" id="score">
+								<div class="score__content" id="level">
+									<div class="score__label">уровень</div>
+									<div class="score__value score__value--level" id="levelValue">1</div>
+									<svg class="level-circle" id="levelCircle" viewbox="0 0 200 200">
+										<circle id="levelCircleBgr" r="80" cx="100" cy="100" fill="none" stroke="#d1b790" stroke-width="24px" />
+										<circle id="levelCircleStroke" r="80" cx="100" cy="100" fill="none" #f25346 stroke="#68c3c0" stroke-width="14px" stroke-dasharray="502" />
+									</svg>
+								</div>
+								<div class="score__content" id="dist">
+									<div class="score__label">дистанция</div>
+									<div class="score__value score__value--dist" id="distValue">000</div>
+								</div>
+								<div class="score__content" id="energy">
+									<div class="score__label">энергия</div>
+									<div class="score__value score__value--energy" id="energyValue">
+										<div class="energy-bar" id="energyBar"></div>
+									</div>
+								</div>
+							</div>
 						</div>
 						<div id="world"></div>	
+						<div class="message message--replay" id="replayMessage">Нажмите, чтобы начать</div>
+						<div class="message message--instructions" id="instructions">Собирайте синие снаряды<span>остерегайтесь красных</span></div>
 				</div>
 				
 				<script src="js/three.min.js"></script>
@@ -19,6 +41,8 @@
 				<script src="js/Cloud.js"></script>
 				<script src="js/Sky.js"></script>
 				<script src="js/AirPlane.js"></script>
+				<!-- <script src="js/Coin.js"></script> -->
+				<!-- <script src="js/CoinsHolder.js"></script> -->
 				<script src="js/index.js"></script>
 		</body>
 </html>
