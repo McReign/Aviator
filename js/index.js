@@ -7,6 +7,9 @@ var Colors = {
 	blue:0x68c3c0,
 };
 
+var enemiesPool = [];
+var coinsPool = [];
+
 var game = {
 	distance:0,
 	energy:100,
@@ -26,14 +29,17 @@ function updateDistance(){
 	// game.distance += game.speed*deltaTime*game.ratioSpeedDistance;
 	game.distance += 1;
 	fieldDistance.innerHTML = Math.floor(game.distance);
-	// var d = 502*(1-(game.distance%game.distanceForLevelUpdate)/game.distanceForLevelUpdate);
-	// levelCircle.setAttribute("stroke-dashoffset", d);
+	var d = 502*((game.distance-1000*game.level)/1000);
+	levelCircle.setAttribute("stroke-dashoffset", d);
 }
   
 function updateEnergy(){
 	// game.energy -= game.speed*deltaTime*game.ratioSpeedEnergy;
-	game.energy -= .1;
+	game.energy -= .1*game.level*.5;
 	game.energy = Math.max(0, game.energy);
+
+	if (game.energy > 100) game.energy = 100
+
 	energyBar.style.right = (100-game.energy)+"%";
 	energyBar.style.backgroundColor = (game.energy<50)? "#f25346" : "#68c3c0";
   
@@ -62,6 +68,8 @@ function init() {
 	// добавляем объекты
 	createSea();
 	createSky();
+	createEnemies();
+	createCoins();
 
 	document.addEventListener('mousemove', handleMouseMove, false);
 	document.addEventListener('click', start, false);
@@ -87,6 +95,17 @@ function start() {
 
 function loop(){
 	if (game.status=="playing") {
+		if (Math.floor(game.distance)%50 == 0){
+			enemiesHolder.spawnEnemies();
+		}
+		if (Math.floor(game.distance)%100 == 0){
+			coinsHolder.spawnCoins();
+		}
+		if (Math.floor(game.distance) >= 1000*game.level){
+			game.level++;
+			fieldLevel.innerHTML = Math.floor(game.level);
+		}
+
 		updatePlane();
 		updateDistance();
 		updateEnergy();
@@ -107,6 +126,8 @@ function loop(){
 
 	sea.mesh.rotation.z += .005;
 	sky.mesh.rotation.z += .01;
+	enemiesHolder.rotateEnemies();
+	coinsHolder.rotateCoins();
 	renderer.render(scene, camera);
 	requestAnimationFrame(loop);
 }
@@ -262,11 +283,20 @@ function createPlane(){
 	scene.add(airplane.mesh);
 }
 
+function createEnemies(){
+	for (var i=0; i<10; i++){
+		var enemy = new Enemy();
+		enemiesPool.push(enemy);
+	}
+	enemiesHolder = new EnemiesHolder();
+	scene.add(enemiesHolder.mesh)
+}
 
-
-
-
-
-
-
-
+function createCoins(){
+	for (var i=0; i<20; i++){
+		var coin = new Coin();
+		coinsPool.push(coin);
+	}
+	coinsHolder = new CoinsHolder();
+	scene.add(coinsHolder.mesh)
+}
