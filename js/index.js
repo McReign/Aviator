@@ -90,6 +90,7 @@ function start() {
 
 		hideReplay();
 		createPlane();
+		fieldLevel.innerHTML = Math.floor(game.level);
 	}
 }
 
